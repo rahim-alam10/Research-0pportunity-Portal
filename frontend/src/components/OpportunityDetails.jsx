@@ -1,5 +1,6 @@
-import { Link, useParams } from 'react-router-dom'
-import { opportunities } from '../data/opportunities'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { deleteOpportunity, getOpportunity, getSeedOpportunity, updateOpportunityStatus } from '../data/api'
 
 function formatDeadline(deadline) {
   return new Intl.DateTimeFormat('en-US', {
@@ -11,7 +12,40 @@ function formatDeadline(deadline) {
 
 function OpportunityDetails() {
   const { code } = useParams()
-  const opportunity = opportunities.find((item) => item.code === code)
+  const navigate = useNavigate()
+  const [opportunity, setOpportunity] = useState(() => getSeedOpportunity(code))
+  const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    getOpportunity(code).then(setOpportunity).catch(() => {})
+  }, [code])
+
+  async function handleClose() {
+    setBusy(true)
+    setError('')
+    try {
+      setOpportunity(await updateOpportunityStatus(code, 'Closed'))
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handleDelete() {
+    if (!window.confirm('Delete this research opportunity?')) return
+
+    setBusy(true)
+    setError('')
+    try {
+      await deleteOpportunity(code)
+      navigate('/opportunities')
+    } catch (requestError) {
+      setError(requestError.message)
+      setBusy(false)
+    }
+  }
 
   if (!opportunity) {
     return (
@@ -67,7 +101,12 @@ function OpportunityDetails() {
               <p className="detail-value">{formatDeadline(opportunity.deadline)}</p>
             </div>
           </div>
-          <button className="btn btn-dark hero-button detail-apply-button" type="button">Apply for this opportunity <span aria-hidden="true">&#8594;</span></button>
+          <div className="detail-actions">
+            <Link className="btn btn-dark hero-button" to={`/add-opportunity/${opportunity.code}`}>Edit opportunity <span aria-hidden="true">&#8594;</span></Link>
+            {opportunity.status === 'Open' && <button className="btn btn-outline-dark hero-button" disabled={busy} onClick={handleClose} type="button">Close opportunity</button>}
+            <button className="btn btn-outline-danger hero-button" disabled={busy} onClick={handleDelete} type="button">Delete opportunity</button>
+          </div>
+          {error && <p className="form-error" role="alert">{error}</p>}
         </aside>
       </div>
     </main>

@@ -21,6 +21,7 @@ function App() {
         <Route path="/test-plan" element={<TestPlan />} />
         <Route path="/add-opportunities" element={<AddOpportunity />} />
         <Route path="/add-opportunity" element={<AddOpportunity />} />
+        <Route path="/add-opportunity/:code" element={<AddOpportunity />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
