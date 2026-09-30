@@ -1,4 +1,18 @@
-# React + Vite
+# Research-0pportunity-Portal
+
+Research opportunity portal with a React frontend and Express backend.
+
+## Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The backend setup is documented in `backend/README.md`.
+
+## Original Vite Notes
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
