@@ -1,0 +1,29 @@
+[
+  {
+    "id": "RO-001",
+    "title": "Campus Air Quality Mapping",
+    "department": "Environmental Science",
+    "description": "Collect and visualize air-quality readings across high-traffic campus spaces.",
+    "supervisor": "Dr. Maya Patel",
+    "duration": "8 weeks",
+    "status": "Open"
+  },
+  {
+    "id": "RO-002",
+    "title": "Accessible Learning Interfaces",
+    "department": "Human-Computer Interaction",
+    "description": "Study how students navigate accessible course tools and turn findings into design guidance.",
+    "supervisor": "Prof. Noah Williams",
+    "duration": "10 weeks",
+    "status": "Open"
+  },
+  {
+    "id": "RO-003",
+    "title": "Local History Digital Archive",
+    "department": "Digital Humanities",
+    "description": "Help preserve oral histories by organizing, tagging, and presenting community records.",
+    "supervisor": "Dr. Amina Hassan",
+    "duration": "6 weeks",
+    "status": "Open"
+  }
+]
