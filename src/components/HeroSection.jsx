@@ -10,13 +10,7 @@ function HeroSection() {
             Every endpoint is ready to prove its behavior.
           </p>
           <div className="hero-actions">
-            <a className="btn btn-dark hero-button" href="#test-plan">View test plan <span aria-hidden="true">&#8594;</span></a>
-            <a className="text-link" href="#opportunities">Explore opportunities <span aria-hidden="true">&#8594;</span></a>
-          </div>
-          <div className="hero-meta" aria-label="API testing tools">
-            <span className="meta-label">Tested with</span>
-            <span className="tool-pill">Postman</span>
-            <span className="tool-pill">Bruno</span>
+            <a className="btn btn-dark hero-button" href="/opportunities">Explore opportunities <span aria-hidden="true">&#8594;</span></a>
           </div>
         </div>
 
