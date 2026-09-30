@@ -1,3 +1,5 @@
+import HomeOpportunities from './HomeOpportunities'
+
 function HeroSection() {
   return (
     <section className="hero-section">
@@ -9,9 +11,6 @@ function HeroSection() {
             A focused workspace for creating, discovering, and managing student research opportunities.
             Every endpoint is ready to prove its behavior.
           </p>
-          <div className="hero-actions">
-            <a className="btn btn-dark hero-button" href="/opportunities">Explore opportunities <span aria-hidden="true">&#8594;</span></a>
-          </div>
         </div>
 
         <div className="request-card" aria-label="API status preview">
@@ -32,6 +31,7 @@ function HeroSection() {
           <div className="request-card-footer"><span>Research opportunities</span><strong>Open for discovery</strong></div>
         </div>
       </div>
+      <HomeOpportunities />
     </section>
   )
 }
