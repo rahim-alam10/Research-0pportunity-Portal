@@ -1,4 +1,3 @@
-import HomeOpportunities from './HomeOpportunities'
 
 function HeroSection() {
   return (
@@ -31,7 +30,6 @@ function HeroSection() {
           <div className="request-card-footer"><span>Research opportunities</span><strong>Open for discovery</strong></div>
         </div>
       </div>
-      <HomeOpportunities />
     </section>
   )
 }
