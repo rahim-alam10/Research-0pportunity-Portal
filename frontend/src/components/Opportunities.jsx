@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
-import { opportunities } from '../data/opportunities'
 import { getOpportunities } from '../data/api'
 import OpportunityCard from './OpportunityCard'
 
 function Opportunities() {
-  const [items, setItems] = useState(opportunities)
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
     getOpportunities()
       .then(setItems)
-      .catch(() => setError('Showing the saved opportunities. Start the backend to manage them.'))
+      .catch((requestError) => setError(requestError.message))
+      .finally(() => setLoading(false))
   }, [])
 
   return (
@@ -22,7 +23,8 @@ function Opportunities() {
         <p className="section-note">Browse open research opportunities and find a project that matches your curiosity.</p>
       </div>
 
-      {error && <p className="form-success" role="status">{error}</p>}
+      {loading && <p className="form-success" role="status">Loading opportunities...</p>}
+      {error && <p className="form-error" role="alert">{error}</p>}
 
       <div className="opportunity-grid">
         {items.map((opportunity) => (

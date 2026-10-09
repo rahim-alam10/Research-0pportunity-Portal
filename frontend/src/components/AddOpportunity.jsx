@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { createOpportunity, getOpportunity, getSeedOpportunity, updateOpportunity } from '../data/api'
+import { createOpportunity, getOpportunity, updateOpportunity } from '../data/api'
 
 const initialForm = {
   researchTitle: '',
@@ -25,22 +25,6 @@ function AddOpportunity() {
 
   useEffect(() => {
     if (!code) return
-
-    const seed = getSeedOpportunity(code)
-    if (seed) {
-      setForm({
-        researchTitle: seed.title,
-        researchDescription: seed.description,
-        researchArea: seed.researchArea,
-        facultyMember: seed.supervisor,
-        department: seed.department,
-        requiredSkills: seed.requiredSkills,
-        positions: seed.positions,
-        deadline: seed.deadline,
-        duration: seed.duration,
-        status: seed.status,
-      })
-    }
 
     getOpportunity(code).then((opportunity) => setForm({
       researchTitle: opportunity.title,
@@ -73,7 +57,7 @@ function AddOpportunity() {
       duration: form.duration || 'To be confirmed',
       researchArea: form.researchArea,
       requiredSkills: form.requiredSkills,
-      positions: Number(form.positions),
+      positionsAvailable: Number(form.positions),
       deadline: form.deadline,
       status: form.status,
     }

@@ -1,17 +1,23 @@
-import { opportunities as seedOpportunities } from './opportunities'
-
-const API_BASE = 'http://localhost:3000/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 const tones = ['coral', 'mint', 'sun', 'lavender']
 
 function normalizeOpportunity(item, index = 0) {
+  const department = item.department?.name || item.department || ''
+  const supervisor = item.supervisor?.name || item.supervisor || ''
+  const requiredSkills = Array.isArray(item.requiredSkills)
+    ? item.requiredSkills.join(', ')
+    : item.requiredSkills
+
   return {
     ...item,
     code: item.code || item.id,
     tone: item.tone || tones[index % tones.length],
-    researchArea: item.researchArea || item.department,
-    requiredSkills: item.requiredSkills || 'Not specified',
-    positions: item.positions || 1,
-    deadline: item.deadline || '',
+    department,
+    supervisor,
+    researchArea: item.researchArea || department,
+    requiredSkills: requiredSkills || 'Not specified',
+    positions: item.positions || item.positionsAvailable || 1,
+    deadline: item.deadline ? item.deadline.slice(0, 10) : '',
   }
 }
 
@@ -23,7 +29,7 @@ async function request(path, options) {
 
   if (!response.ok) {
     const body = await response.json().catch(() => ({}))
-    throw new Error(body.error || 'The request could not be completed.')
+    throw new Error(body.message || body.error || 'The request could not be completed.')
   }
 
   return response.status === 204 ? null : response.json()
@@ -34,8 +40,8 @@ export async function getOpportunities() {
   return result.data.map(normalizeOpportunity)
 }
 
-export async function getOpportunity(code) {
-  const result = await request(`/opportunities/${code}`)
+export async function getOpportunity(id) {
+  const result = await request(`/opportunities/${id}`)
   return normalizeOpportunity(result.data)
 }
 
@@ -47,26 +53,22 @@ export async function createOpportunity(payload) {
   return normalizeOpportunity(result.data)
 }
 
-export async function updateOpportunity(code, payload) {
-  const result = await request(`/opportunities/${code}`, {
+export async function updateOpportunity(id, payload) {
+  const result = await request(`/opportunities/${id}`, {
     method: 'PUT',
     body: JSON.stringify(payload),
   })
   return normalizeOpportunity(result.data)
 }
 
-export async function updateOpportunityStatus(code, status) {
-  const result = await request(`/opportunities/${code}/status`, {
+export async function updateOpportunityStatus(id, status) {
+  const result = await request(`/opportunities/${id}/status`, {
     method: 'PATCH',
     body: JSON.stringify({ status }),
   })
   return normalizeOpportunity(result.data)
 }
 
-export async function deleteOpportunity(code) {
-  await request(`/opportunities/${code}`, { method: 'DELETE' })
-}
-
-export function getSeedOpportunity(code) {
-  return seedOpportunities.find((opportunity) => opportunity.code === code)
+export async function deleteOpportunity(id) {
+  await request(`/opportunities/${id}`, { method: 'DELETE' })
 }

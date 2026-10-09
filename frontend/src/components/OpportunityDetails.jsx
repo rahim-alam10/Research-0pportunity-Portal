@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { deleteOpportunity, getOpportunity, getSeedOpportunity, updateOpportunityStatus } from '../data/api'
+import { deleteOpportunity, getOpportunity, updateOpportunityStatus } from '../data/api'
 
 function formatDeadline(deadline) {
   return new Intl.DateTimeFormat('en-US', {
@@ -13,12 +13,16 @@ function formatDeadline(deadline) {
 function OpportunityDetails() {
   const { code } = useParams()
   const navigate = useNavigate()
-  const [opportunity, setOpportunity] = useState(() => getSeedOpportunity(code))
+  const [opportunity, setOpportunity] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
-    getOpportunity(code).then(setOpportunity).catch(() => {})
+    getOpportunity(code)
+      .then(setOpportunity)
+      .catch((requestError) => setError(requestError.message))
+      .finally(() => setLoading(false))
   }, [code])
 
   async function handleClose() {
@@ -45,6 +49,10 @@ function OpportunityDetails() {
       setError(requestError.message)
       setBusy(false)
     }
+  }
+
+  if (loading) {
+    return <main className="opportunity-detail-page"><p className="eyebrow">Loading opportunity...</p></main>
   }
 
   if (!opportunity) {
