@@ -14,7 +14,7 @@ function OpportunityCard({ opportunity }) {
         <span>Supervisor<strong>{opportunity.supervisor}</strong></span>
         <span>Duration<strong>{opportunity.duration}</strong></span>
       </div>
-      <Link className="opportunity-link" to={`/opportunities/${opportunity.code}`}>
+      <Link className="opportunity-link py-6.5" to={`/opportunities/${opportunity.code}`}>
         View opportunity <span aria-hidden="true">&#8594;</span>
       </Link>
     </article>
