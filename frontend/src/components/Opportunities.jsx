@@ -26,6 +26,10 @@ function Opportunities() {
       {loading && <p className="form-success" role="status">Loading opportunities...</p>}
       {error && <p className="form-error" role="alert">{error}</p>}
 
+      {!loading && !error && items.length === 0 && (
+        <p className="empty-state" role="status">No opportunities</p>
+      )}
+
       <div className="opportunity-grid">
         {items.map((opportunity) => (
           <OpportunityCard key={opportunity.code} opportunity={opportunity} />

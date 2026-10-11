@@ -29,7 +29,8 @@ async function request(path, options) {
 
   if (!response.ok) {
     const body = await response.json().catch(() => ({}))
-    throw new Error(body.message || body.error || 'The request could not be completed.')
+    const message = body.message || body.error || 'The request could not be completed.'
+    throw new Error(`Error ${response.status}: ${message}`)
   }
 
   return response.status === 204 ? null : response.json()

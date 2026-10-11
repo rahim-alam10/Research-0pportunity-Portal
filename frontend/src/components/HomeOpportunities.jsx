@@ -23,6 +23,9 @@ function HomeOpportunities() {
         </div>
       </div>
       {error && <p className="form-error" role="alert">{error}</p>}
+      {!error && opportunities.length === 0 && (
+        <p className="empty-state" role="status">No opportunities</p>
+      )}
       <div className="opportunity-grid">
         {opportunities.map((opportunity) => (
           <OpportunityCard key={opportunity.code} opportunity={opportunity} />

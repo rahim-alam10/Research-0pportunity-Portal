@@ -7,7 +7,13 @@ import AddOpportunity from './components/AddOpportunity'
 import OpportunityDetails from './components/OpportunityDetails'
 
 function NotFound() {
-  return <p>Page not found.</p>
+  return (
+    <main className="opportunity-detail-page">
+      <p className="eyebrow">Error 404</p>
+      <h1>Page not found</h1>
+      <p className="section-note">The page you requested does not exist.</p>
+    </main>
+  )
 }
 
 function App() {
