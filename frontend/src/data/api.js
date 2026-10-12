@@ -29,7 +29,10 @@ async function request(path, options) {
 
   if (!response.ok) {
     const body = await response.json().catch(() => ({}))
-    const message = body.message || body.error || 'The request could not be completed.'
+    const message = body.message
+      || body.error
+      || (Array.isArray(body.errors) && body.errors.join(' '))
+      || 'The request could not be completed.'
     throw new Error(`Error ${response.status}: ${message}`)
   }
 

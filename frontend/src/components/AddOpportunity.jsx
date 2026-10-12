@@ -16,6 +16,15 @@ const initialForm = {
   status: 'Open',
 }
 
+function getTomorrow() {
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const year = tomorrow.getFullYear()
+  const month = String(tomorrow.getMonth() + 1).padStart(2, '0')
+  const day = String(tomorrow.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 function AddOpportunity() {
   const { code } = useParams()
   const navigate = useNavigate()
@@ -116,7 +125,7 @@ function AddOpportunity() {
           </label>
           <label className="form-field">
             Application deadline
-            <input type="date" name="deadline" value={form.deadline} onChange={handleChange} required />
+            <input type="date" name="deadline" min={getTomorrow()} value={form.deadline} onChange={handleChange} required />
           </label>
           <label className="form-field">
             Status
