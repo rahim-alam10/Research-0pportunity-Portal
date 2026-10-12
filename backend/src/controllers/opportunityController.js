@@ -14,6 +14,23 @@ function departmentCode(name) {
   return code.toUpperCase();
 }
 
+async function resolveDepartment(name) {
+  const departmentName = name.trim();
+  const existingDepartment = await Department.findOne({ name: departmentName });
+  if (existingDepartment) return existingDepartment;
+
+  const baseCode = departmentCode(departmentName);
+  let code = baseCode;
+  let suffix = 2;
+
+  while (await Department.exists({ code })) {
+    code = `${baseCode}${suffix}`;
+    suffix += 1;
+  }
+
+  return Department.create({ name: departmentName, code });
+}
+
 function normalizeDescription(description) {
   if (typeof description !== 'string') return description;
 
@@ -30,14 +47,7 @@ async function resolveOpportunityReferences(body) {
   payload.description = normalizeDescription(payload.description);
 
   if (typeof payload.department === 'string') {
-    const department = await Department.findOneAndUpdate(
-      { name: payload.department.trim() },
-      {
-        name: payload.department.trim(),
-        code: departmentCode(payload.department),
-      },
-      { upsert: true, new: true, setDefaultsOnInsert: true },
-    );
+    const department = await resolveDepartment(payload.department);
     payload.department = department._id;
   }
 
